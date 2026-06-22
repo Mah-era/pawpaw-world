@@ -9,6 +9,12 @@ The game uses vanilla JavaScript, Canvas 2D, WebAudio, and `localStorage`. It
 has no build step, backend, package manager, paid systems, or network runtime
 dependency.
 
+## Play Online
+
+**Live game:** [https://mah-era.github.io/pawpaw-world/](https://mah-era.github.io/pawpaw-world/)
+
+**Visual report:** [https://mah-era.github.io/pawpaw-world/report/](https://mah-era.github.io/pawpaw-world/report/)
+
 ## Play Locally
 
 From the repository root:
@@ -90,7 +96,8 @@ The JavaScript modules are intentionally split by responsibility:
 
 ## Reports
 
-- [Visual project report](report/index.html)
+- [Deployed visual project report](https://mah-era.github.io/pawpaw-world/report/)
+- [Repository visual project report](report/index.html)
 - [Self-contained visual report](report/PawPaw-World-Report.html)
 - [Player manual](docs/USER_MANUAL.md)
 - [Detailed project report](docs/PROJECT_REPORT.md)
@@ -123,6 +130,8 @@ This is a static site. GitHub Pages is the simplest recommended host and needs
 no build command. After pushing, deploy the `main` branch from the repository
 root. See [Deployment](docs/DEPLOYMENT.md) for GitHub Pages, Netlify, and
 Cloudflare Pages instructions.
+
+Production URL: [https://mah-era.github.io/pawpaw-world/](https://mah-era.github.io/pawpaw-world/)
 
 ## License
 

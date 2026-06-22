@@ -21,6 +21,8 @@ The game is implemented as a static browser project:
 
 The game can run from a simple local static server (`python3 -m http.server 3000`, then `http://localhost:3000`) or directly through `index.html`.
 
+The production deployment is available at [https://mah-era.github.io/pawpaw-world/](https://mah-era.github.io/pawpaw-world/), with the visual report at [https://mah-era.github.io/pawpaw-world/report/](https://mah-era.github.io/pawpaw-world/report/).
+
 The game opens on an animated neon title screen — a parallax skyline with lit windows, a perspective grid floor, a floating cat sigil, and a pulsing logo — with **RESUME** (continue a save) and **START NEW** (begin fresh, with confirmation) buttons.
 
 ## Project Structure

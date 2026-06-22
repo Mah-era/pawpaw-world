@@ -2,7 +2,9 @@
 
 ## Starting the Game
 
-Run a local server (`python3 -m http.server 3000`) and open `http://localhost:3000`, or open `index.html` directly in a browser.
+Play the deployed game at [https://mah-era.github.io/pawpaw-world/](https://mah-era.github.io/pawpaw-world/).
+
+For local play, run a server (`python3 -m http.server 3000`) and open `http://localhost:3000`, or open `index.html` directly in a browser.
 
 On the animated title screen choose **RESUME** to continue a saved city, or **START NEW** to begin a fresh wander. (START NEW confirms before erasing an existing save.) Progress saves automatically as you play.
 

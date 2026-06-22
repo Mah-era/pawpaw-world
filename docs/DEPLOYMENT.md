@@ -3,6 +3,10 @@
 PawPaw World is a static site. Deploy the repository root as-is; there is no
 install command, build command, server function, or environment variable.
 
+**Production game:** [https://mah-era.github.io/pawpaw-world/](https://mah-era.github.io/pawpaw-world/)
+
+**Production report:** [https://mah-era.github.io/pawpaw-world/report/](https://mah-era.github.io/pawpaw-world/report/)
+
 ## Recommended: GitHub Pages
 
 1. Push the repository to GitHub.
@@ -11,7 +15,7 @@ install command, build command, server function, or environment variable.
 4. Under **Build and deployment**, choose **Deploy from a branch**.
 5. Select the `main` branch and `/ (root)` folder, then save.
 
-For a repository named `pawpaw-world` under `Mah-era`, the expected URL is:
+The deployment URL is:
 
 ```text
 https://mah-era.github.io/pawpaw-world/
