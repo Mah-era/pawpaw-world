@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAWPAW WORLD — Project Report</title>
+<style>
+:root{
+  --cyan:#00f0ff; --magenta:#ff2bd6; --amber:#ffb347; --lime:#aaff00; --purple:#7b61ff;
+  --bg:#04060e; --panel:rgba(10,16,34,.72); --line:rgba(0,240,255,.22);
+  --text:#cfe6ff; --dim:#8aa0c0;
+  --mono:"SF Mono",ui-monospace,"Courier New",monospace; --sans:"Segoe UI",system-ui,-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:
+  radial-gradient(ellipse at 20% 0%,rgba(123,97,255,.16),transparent 55%),
+  radial-gradient(ellipse at 90% 10%,rgba(255,43,214,.12),transparent 50%),
+  radial-gradient(ellipse at 50% 100%,rgba(0,240,255,.12),transparent 55%),var(--bg);}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(0,240,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.05) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:linear-gradient(to bottom,#000,transparent 92%)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+a{color:var(--cyan);text-decoration:none}
+code,.mono{font-family:var(--mono)}
+
+.hero{min-height:96vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:60px 20px}
+.hero .kicker{font-family:var(--mono);letter-spacing:6px;color:var(--cyan);font-size:13px;text-shadow:0 0 14px var(--cyan);margin-bottom:18px}
+.hero h1{font-family:var(--mono);font-size:clamp(42px,9vw,116px);letter-spacing:6px;line-height:.95;color:#fff;
+  text-shadow:-2px 0 0 rgba(255,43,214,.5),2px 0 0 rgba(0,240,255,.5),0 0 22px var(--cyan),0 0 70px var(--cyan);animation:pulse 3.2s ease-in-out infinite}
+.hero h1 span{color:var(--magenta);text-shadow:0 0 22px var(--magenta),0 0 70px var(--magenta)}
+@keyframes pulse{50%{text-shadow:-2px 0 0 rgba(255,43,214,.5),2px 0 0 rgba(0,240,255,.5),0 0 30px var(--cyan),0 0 100px var(--cyan)}}
+.hero p.tag{max-width:640px;margin:22px auto 0;color:var(--dim);font-size:17px}
+.hero .meta{margin-top:30px;display:flex;gap:26px;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.hero .meta b{color:var(--lime)}
+.scroll-cue{position:absolute;bottom:26px;font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--dim);animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(8px)}}
+
+section{padding:70px 0;position:relative}
+.eyebrow{font-family:var(--mono);letter-spacing:5px;font-size:12px;color:var(--magenta);text-shadow:0 0 12px rgba(255,43,214,.5)}
+h2{font-family:var(--mono);font-size:clamp(26px,4vw,40px);letter-spacing:2px;color:#fff;margin:8px 0 6px;text-shadow:0 0 18px rgba(0,240,255,.35)}
+.lead{color:var(--dim);max-width:820px;margin-bottom:34px}
+h3{font-family:var(--mono);font-size:18px;letter-spacing:1px;color:var(--cyan);margin:0 0 6px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),var(--magenta),var(--line),transparent);opacity:.7}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px 24px;backdrop-filter:blur(6px);box-shadow:0 0 30px rgba(0,0,0,.4),inset 0 0 30px rgba(0,240,255,.03)}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#02040a;box-shadow:0 8px 30px rgba(0,0,0,.5);transition:transform .25s,box-shadow .25s}
+figure:hover{transform:translateY(-4px);box-shadow:0 12px 44px rgba(0,240,255,.18)}
+figure img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover}
+figcaption{font-family:var(--mono);font-size:12.5px;color:var(--text);padding:11px 14px;border-top:1px solid var(--line);background:rgba(0,240,255,.04)}
+figcaption b{color:var(--cyan)}
+
+.videowrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#02040a;box-shadow:0 0 50px rgba(0,240,255,.12)}
+.videowrap video{width:100%;display:block}
+.videowrap .vc{font-family:var(--mono);font-size:12.5px;color:var(--dim);padding:12px 16px;border-top:1px solid var(--line);background:rgba(0,240,255,.04)}
+.videowrap .vc b{color:var(--cyan)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
+.card .ic{font-size:24px;margin-bottom:8px;filter:drop-shadow(0 0 8px var(--cyan))}
+.card h3{font-size:16px;margin-bottom:6px}
+.card p{color:var(--dim);font-size:14px}
+.tag-pill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--bg);background:var(--cyan);border-radius:20px;padding:3px 11px;margin:3px 4px 0 0;font-weight:700}
+.tag-pill.m{background:var(--magenta)} .tag-pill.a{background:var(--amber)} .tag-pill.l{background:var(--lime)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;text-align:center}
+@media(max-width:880px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat .num{font-family:var(--mono);font-size:40px;color:var(--cyan);text-shadow:0 0 18px rgba(0,240,255,.5)}
+.stat .lbl{font-size:12px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid rgba(0,240,255,.12)}
+th{font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--magenta);text-transform:uppercase}
+td.k{font-family:var(--mono);color:var(--cyan);white-space:nowrap}
+tr:hover td{background:rgba(0,240,255,.04)}
+.kbd{font-family:var(--mono);font-size:12px;background:rgba(0,240,255,.08);border:1px solid var(--line);border-radius:5px;padding:2px 9px;color:var(--cyan);box-shadow:0 0 8px rgba(0,240,255,.15)}
+ul.clean{list-style:none;margin-top:8px}
+ul.clean li{padding:6px 0 6px 22px;position:relative;color:var(--dim)}
+ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--magenta)}
+ul.clean li b{color:var(--text)}
+.zonebar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.zonebar span{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid}
+footer{padding:50px 0 70px;text-align:center;color:var(--dim);font-family:var(--mono);font-size:12px;border-top:1px solid var(--line);margin-top:40px}
+.note{font-size:12.5px;color:var(--dim);font-style:italic;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">PROJECT REPORT · A CYBERPUNK CAT ODYSSEY</div>
+  <h1>PAWPAW <span>WORLD</span></h1>
+  <p class="tag">A non-combat, open-world browser game where a cyber-enhanced calico cat prowls a living neon megacity — rooftops, streets, and the tunnels below — built in vanilla JavaScript with zero dependencies.</p>
+  <div class="meta">
+    <div>STACK · <b>Vanilla JS · Canvas 2D · WebAudio · localStorage</b></div>
+    <div>RUNS AT · <b>localhost:3000</b></div>
+    <div>BUILD · <b>v1.0 · 11 JS modules</b></div>
+  </div>
+  <div class="scroll-cue">▼ SCROLL TO EXPLORE</div>
+</header>
+
+<div class="wrap">
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="eyebrow">01 · OVERVIEW</div>
+  <h2>The City Remembers You</h2>
+  <p class="lead">PawPaw World is a relaxing exploration game — no levels gating the world, no combat, no game-over. You roam a dense, hand-built cyberpunk city as PawPaw, chasing curiosity rather than conflict: collecting, climbing, hacking, racing courier jobs, rescuing kittens, and slowly uncovering the mystery of Line 9, the ghost train, and a scattered city AI.</p>
+  <div class="grid g2" style="align-items:stretch">
+    <figure><img src="report-assets/01_title.jpg" alt="Title screen"><figcaption><b>The opening scene.</b> A lone cat on a rainy rooftop, the live neon city rendering behind a cinematic, letterboxed menu.</figcaption></figure>
+    <div class="panel">
+      <h3>Design Pillars</h3>
+      <ul class="clean">
+        <li><b>Exploration over combat.</b> The city is the content; everything rewards curiosity.</li>
+        <li><b>Soft failure only.</b> Missed timers cut a bonus or reset a streak — they never end the game.</li>
+        <li><b>Always something to do.</b> Tuned for 5-minute, 20-minute, and completion-length sessions.</li>
+        <li><b>Atmosphere first.</b> Procedural day/night, weather, city events, and adaptive music carry the mood.</li>
+        <li><b>Self-contained.</b> No build step, no dependencies, no network, no paid mechanics.</li>
+      </ul>
+      <div style="margin-top:14px">
+        <span class="tag-pill">EXPLORATION</span><span class="tag-pill m">PARKOUR</span>
+        <span class="tag-pill a">MISSIONS</span><span class="tag-pill l">PROGRESSION</span><span class="tag-pill">ATMOSPHERE</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:24px">
+    <div class="stats">
+      <div class="stat"><div class="num">3</div><div class="lbl">Interactive zones</div></div>
+      <div class="stat"><div class="num">24</div><div class="lbl">City curiosities</div></div>
+      <div class="stat"><div class="num">177</div><div class="lbl">Collectibles</div></div>
+      <div class="stat"><div class="num">35+</div><div class="lbl">Live NPCs</div></div>
+      <div class="stat"><div class="num">9</div><div class="lbl">City events</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">Parkour races</div></div>
+      <div class="stat"><div class="num">10</div><div class="lbl">Journal tabs</div></div>
+      <div class="stat"><div class="num">25</div><div class="lbl">Achievements</div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- GAMEPLAY VIDEO -->
+<section id="video">
+  <div class="eyebrow">02 · GAMEPLAY</div>
+  <h2>In Motion</h2>
+  <p class="lead">A complete gameplay film built from every scene in the gallery. PawPaw is actively controlled through all districts, traversal moves, weather and city events, courier work, racing, hacking, NPC conversations, kitten rescue, curiosities, photo mode, fever combos, supply drones, progression screens, shopping, mapping and fast travel. The soundtrack is captured from the game engine, keeping music, movement, rain, thunder, interfaces and event sounds synchronized with the action.</p>
+  <div class="videowrap">
+    <video src="report-assets/gameplay_everything.webm" autoplay loop muted playsinline controls preload="metadata"></video>
+    <div class="vc"><b>▶ COMPLETE 39-SCENE GAMEPLAY FILM (3:08)</b> — Every gallery scene is covered using the game's own interface without added chapter captions. Includes all locations, NPCs, courier work, races, hacking, lore, kitten rescue, journal views, weather/events, movement, curiosities, photo mode, fever, supply drone, shop, map and fast travel. <b>🔊 Unmute</b> for synchronized in-game stereo sound.</div>
+  </div>
+  <div class="grid g3" style="margin-top:22px">
+    <figure><img src="report-assets/29_sprint_trail.jpg" alt="Sprint trail"><figcaption>Sprinting with the neon flow trail.</figcaption></figure>
+    <figure><img src="report-assets/27_zipline.jpg" alt="Zipline"><figcaption>Riding a zipline between towers.</figcaption></figure>
+    <figure><img src="report-assets/26_climb.jpg" alt="Climbing"><figcaption>Climbing a drainpipe to the rooftops.</figcaption></figure>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- THE CITY / ZONES -->
+<section id="zones">
+  <div class="eyebrow">03 · THE CITY</div>
+  <h2>Rooftops · Road · Underground</h2>
+  <p class="lead">One continuous, fully walkable world stacked in three layers and split into seven named districts. Buildings open onto ground-floor storefront arcades so the street reads as a single promenade, and a drainpipe on every building links the road to the rooftop network.</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/02_street_npcs.jpg" alt="Street"><figcaption><b>ROAD</b> · Neon Market — storefronts, stalls, vendors, pedestrians.</figcaption></figure>
+    <figure><img src="report-assets/07_rooftops.jpg" alt="Rooftops"><figcaption><b>ROOFTOPS</b> · ziplines, wires, gardens, antennas.</figcaption></figure>
+    <figure><img src="report-assets/08_underground.jpg" alt="Underground"><figcaption><b>UNDERGROUND</b> · tunnels, the Drowned Arcade, Line 9.</figcaption></figure>
+  </div>
+  <div class="zonebar" style="margin-top:26px">
+    <span style="border-color:var(--purple);color:var(--purple)">BACK ALLEY NETWORK</span>
+    <span style="border-color:var(--magenta);color:var(--magenta)">NEON MARKET</span>
+    <span style="border-color:var(--cyan);color:var(--cyan)">TRANSIT PLAZA</span>
+    <span style="border-color:#4dd2ff;color:#4dd2ff">CORPORATE SECTOR</span>
+    <span style="border-color:var(--amber);color:var(--amber)">OLD SIGNAL DOCKS</span>
+    <span style="border-color:var(--lime);color:var(--lime)">ROOFTOP LAYER</span>
+    <span style="border-color:#ff6a00;color:#ff6a00">UNDERGROUND</span>
+  </div>
+  <div class="grid g4" style="margin-top:8px">
+    <figure><img src="report-assets/03_alley.jpg" alt="Alley"><figcaption>Back Alley Network</figcaption></figure>
+    <figure><img src="report-assets/04_plaza.jpg" alt="Plaza"><figcaption>Transit Plaza</figcaption></figure>
+    <figure><img src="report-assets/05_corporate.jpg" alt="Corporate"><figcaption>Corporate Sector</figcaption></figure>
+    <figure><img src="report-assets/06_docks.jpg" alt="Docks"><figcaption>Old Signal Docks</figcaption></figure>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- CITY LIFE / NPCs -->
+<section id="npcs">
+  <div class="eyebrow">04 · CITY LIFE &amp; NPCs</div>
+  <h2>A Street That's Always Busy</h2>
+  <p class="lead">The city breathes around you. Thirty-plus pedestrians wander on day/night schedules, raise umbrellas in the rain, and crowd around street performers. Fixed characters run stalls, hand out quests, and trade at vendors, while hover-cars, transit buses, and cargo &amp; police drones move through the lanes overhead.</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/39_npc_talk.jpg" alt="Talking to an NPC"><figcaption><b>NPC conversation</b> — Greasy Jin hands PawPaw the "Memory Chip Search" errand.</figcaption></figure>
+    <figure><img src="report-assets/38_city_npcs.jpg" alt="NPC crowd"><figcaption><b>Crowd</b> — pedestrians gathering at Noodle Row for a street performance.</figcaption></figure>
+    <figure><img src="report-assets/02_street_npcs.jpg" alt="Street life"><figcaption><b>Street life</b> — shoppers and vendors along the storefronts.</figcaption></figure>
+  </div>
+  <div class="grid g3" style="margin-top:22px">
+    <div class="card"><div class="ic">🚶</div><h3>Pedestrians</h3><p>Wanderers on day/night routines, chatter bubbles, umbrellas in the rain, and crowd behavior around events.</p></div>
+    <div class="card"><div class="ic">🛒</div><h3>Vendors &amp; Givers</h3><p>Fixed characters run the street vendor shop, courier boards, and quest hand-offs.</p></div>
+    <div class="card"><div class="ic">🚁</div><h3>Traffic &amp; Drones</h3><p>Hover-car lanes, transit buses, and cargo/police drones with night searchlights and failure events.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- MISSIONS & TASKS -->
+<section id="missions">
+  <div class="eyebrow">05 · MISSIONS &amp; TASKS</div>
+  <h2>Things To Chase</h2>
+  <p class="lead">Nothing is mandatory, but there's always a thread to pull. Endless courier jobs with streak bonuses, three timed parkour races with medals and ghost replays, hackable terminals that unseal doors and restore the city, story quests, NPC errands, photo challenges, kitten rescues, and roaming data wisps.</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/15_courier_board.jpg" alt="Courier board"><figcaption><b>Courier board</b> — endless delivery jobs; streaks raise the payout.</figcaption></figure>
+    <figure><img src="report-assets/16_race_start.jpg" alt="Race start"><figcaption><b>Race start</b> — step into the ring to begin a timed run.</figcaption></figure>
+    <figure><img src="report-assets/17_race_active.jpg" alt="Race active"><figcaption><b>Race in progress</b> — checkpoint rings, live timer, medal targets.</figcaption></figure>
+    <figure><img src="report-assets/18_hack_minigame.jpg" alt="Hacking"><figcaption><b>Hacking</b> — a signal-trace breach unseals doors &amp; grids.</figcaption></figure>
+    <figure><img src="report-assets/34_lore_dialog.jpg" alt="Story"><figcaption><b>Story &amp; lore</b> — quests and memory fragments.</figcaption></figure>
+    <figure><img src="report-assets/35_kitten_rescue.jpg" alt="Kitten rescue"><figcaption><b>Kitten rescue</b> — carry strays home to the Paw Shrine.</figcaption></figure>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- PROGRESS TRACKING -->
+<section id="progress">
+  <div class="eyebrow">06 · GAME PROGRESS TRACKING</div>
+  <h2>Everything Is Measured</h2>
+  <p class="lead">Progress is tracked at every grain — a live HUD (zone, time, discovery %, Paw Level &amp; title, collectible counts, rotating challenges), a ten-tab journal, and a District Completion percentage that folds together collectibles, secrets, kittens, shrine, mysteries, upgrades, achievements, photos, courier and race records. All of it auto-saves to localStorage.</p>
+  <div class="grid g2">
+    <figure><img src="report-assets/19_journal_completion.jpg" alt="Completion"><figcaption><b>Completion</b> — District Completion across every tracked category.</figcaption></figure>
+    <figure><img src="report-assets/22_journal_stats.jpg" alt="Stats"><figcaption><b>Stats</b> — level, XP, distance, jumps, streaks, medals &amp; more.</figcaption></figure>
+    <figure><img src="report-assets/20_journal_quests.jpg" alt="Quests"><figcaption><b>Quests</b> — story chains, races, courier streak, NPC help.</figcaption></figure>
+    <figure><img src="report-assets/21_journal_skills.jpg" alt="Skill tree"><figcaption><b>Skill tree</b> — Movement · Exploration · Economy · Style.</figcaption></figure>
+  </div>
+  <div class="grid g4" style="margin-top:22px">
+    <div class="card"><div class="ic">⬆</div><h3>Paw Levels</h3><p>XP from everything you do; eight titles from <i>Street Kitten</i> to <i>City Legend</i>.</p></div>
+    <div class="card"><div class="ic">✦</div><h3>Rotating Challenges</h3><p>Three always-active goals that escalate in tier as you clear them.</p></div>
+    <div class="card"><div class="ic">◉</div><h3>Discovery %</h3><p>Landmarks, teleports, lore and photos feed a discovery meter.</p></div>
+    <div class="card"><div class="ic">💾</div><h3>Auto-save</h3><p>Collectibles, abilities, races (with ghosts), quests &amp; stats persist locally.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- SITUATIONS & EVENTS -->
+<section id="situations">
+  <div class="eyebrow">07 · SITUATIONS &amp; EVENTS</div>
+  <h2>A Sky &amp; Grid That Change</h2>
+  <p class="lead">A full procedural day/night cycle interpolates a ten-stop sky gradient. Five weather states blend smoothly — clear, light &amp; heavy rain, fog, and storm — while random city events break the routine: power outages, kibble-rain bonuses, wisp swarms, the ghost train, hologram glitches, drone failures, street performances, and security sweeps.</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/09_heavy_rain.jpg" alt="Rain"><figcaption><b>Heavy rain</b> — wet streets, reflections, wind-slanted drops.</figcaption></figure>
+    <figure><img src="report-assets/10_fog.jpg" alt="Fog"><figcaption><b>Fog</b> — rooftops dissolving into the haze.</figcaption></figure>
+    <figure><img src="report-assets/11_storm_lightning.jpg" alt="Storm"><figcaption><b>Storm</b> — a lightning flash, synced to thunder.</figcaption></figure>
+    <figure><img src="report-assets/12_blackout.jpg" alt="Blackout"><figcaption><b>Power outage</b> — a district's grid goes dark.</figcaption></figure>
+    <figure><img src="report-assets/13_kibble_rain.jpg" alt="Kibble rain"><figcaption><b>Kibble-rain bonus</b> — the sky feeds you for 45 seconds.</figcaption></figure>
+    <figure><img src="report-assets/14_dawn_pink.jpg" alt="Pink dawn"><figcaption><b>Dawn</b> — the sky blushes magenta-to-coral at sunrise.</figcaption></figure>
+  </div>
+  <p class="note">Other events not pictured: wisp swarms, the driverless Line 9 ghost train, hologram glitches, cargo-drone malfunctions, street performances, and corporate security sweeps.</p>
+</section>
+<div class="divider"></div>
+
+<!-- MOVEMENT -->
+<section id="movement">
+  <div class="eyebrow">08 · MOVEMENT &amp; TRAVERSAL</div>
+  <h2>Flow Through the City</h2>
+  <p class="lead">Sprint, double jump, wall-slide &amp; wall-jump, wall-run, dash, glide, ledge-grab, ladders, drainpipes, and ziplines. Chaining moves builds a <b>Flow combo</b> that pays out in credits — and PawPaw can stop to <b>scratch</b> (press C) just because.</p>
+  <div class="grid g4">
+    <figure><img src="report-assets/26_climb.jpg" alt="Climb"><figcaption>Climb</figcaption></figure>
+    <figure><img src="report-assets/27_zipline.jpg" alt="Zipline"><figcaption>Zipline</figcaption></figure>
+    <figure><img src="report-assets/29_sprint_trail.jpg" alt="Sprint"><figcaption>Sprint + flow trail</figcaption></figure>
+    <figure><img src="report-assets/28_scratch.jpg" alt="Scratch"><figcaption>Scratch (C)</figcaption></figure>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- CURIOSITIES -->
+<section id="curiosities">
+  <div class="eyebrow">09 · CURIOSITIES &amp; ACTIVITIES</div>
+  <h2>Something On Every Corner</h2>
+  <p class="lead">Twenty-four interactive curiosities are scattered across all three layers — each gives kibble, credits, or XP, plays a flavor line, then cools down so you can return. Plus a photo mode, lore readers, and the Paw Shrine.</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/30_curio_street.jpg" alt="Street curio"><figcaption>Street — the Neon Koi Pond.</figcaption></figure>
+    <figure><img src="report-assets/31_curio_roof.jpg" alt="Roof curio"><figcaption>Rooftop — the Observatory.</figcaption></figure>
+    <figure><img src="report-assets/32_curio_underground.jpg" alt="Underground curio"><figcaption>Underground — Glow Mushrooms.</figcaption></figure>
+    <figure><img src="report-assets/33_photo_mode.jpg" alt="Photo mode"><figcaption>Photo mode framing the Apex Spire.</figcaption></figure>
+    <figure><img src="report-assets/34_lore_dialog.jpg" alt="Lore"><figcaption>A lost-memory lore fragment.</figcaption></figure>
+    <figure><img src="report-assets/35_kitten_rescue.jpg" alt="Kitten"><figcaption>Carrying a kitten to the shrine.</figcaption></figure>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- META -->
+<section id="meta">
+  <div class="eyebrow">10 · ECONOMY &amp; META</div>
+  <h2>The Pull That Keeps You Wandering</h2>
+  <p class="lead">A Fever state doubles all credits &amp; XP while a high flow combo lives; supply drones drop mystery capsules; a vendor economy and skill tree spend what you earn; fast-travel and a city map keep the big world legible.</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/36_fever_combo.jpg" alt="Fever"><figcaption><b>Fever / flow combo</b> — chained moves double all rewards.</figcaption></figure>
+    <figure><img src="report-assets/37_supply_drone.jpg" alt="Supply drone"><figcaption><b>Supply drone</b> — pounce it for a mystery capsule.</figcaption></figure>
+    <figure><img src="report-assets/23_shop.jpg" alt="Shop"><figcaption><b>Street vendor</b> — movement, economy &amp; cosmetics.</figcaption></figure>
+    <figure><img src="report-assets/24_city_map.jpg" alt="Map"><figcaption><b>City map</b> — districts &amp; landmark counts.</figcaption></figure>
+    <figure><img src="report-assets/25_teleport.jpg" alt="Teleport"><figcaption><b>Transit nodes</b> — unlockable fast travel.</figcaption></figure>
+    <figure><img src="report-assets/01_title.jpg" alt="Title"><figcaption><b>Continue anytime</b> — the city remembers you.</figcaption></figure>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="eyebrow">11 · TECHNICAL ARCHITECTURE</div>
+  <h2>Under the Hood</h2>
+  <p class="lead">Eleven plain JavaScript modules on a shared global namespace — no framework, no build tooling. The deterministic city is generated from a single seed, facades are pre-rendered to offscreen canvases, and all audio is synthesized at runtime with WebAudio.</p>
+  <div class="panel">
+    <table>
+      <thead><tr><th>Module</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td class="k">config.js</td><td>Shared state, world constants, lore, shop, skills, quests, kittens, totals</td></tr>
+        <tr><td class="k">world.js</td><td>Seeded city generation — buildings, open ground floors, ladders, ziplines, props</td></tr>
+        <tr><td class="k">player.js</td><td>Movement, collision, abilities, footstep/purr/scratch audio, rendering</td></tr>
+        <tr><td class="k">citizens.js</td><td>NPCs, vendors, pedestrians, vehicles, drones</td></tr>
+        <tr><td class="k">systems.js</td><td>Day/night, weather, random city events, procedural WebAudio</td></tr>
+        <tr><td class="k">activities.js</td><td>Collectibles, curiosities, terminals, deliveries, races, photos, save/load</td></tr>
+        <tr><td class="k">progression.js</td><td>Economy, achievements, quests, kittens, wisps, shrine, completion</td></tr>
+        <tr><td class="k">meta.js</td><td>XP/levels, Fever, rotating challenges, bonus events, supply capsules</td></tr>
+        <tr><td class="k">render.js</td><td>Canvas renderer — city, ground-floor arcades, particles, ghost replay</td></tr>
+        <tr><td class="k">ui.js</td><td>HUD, journal, shop, teleport, hacking, photo UI, minimap</td></tr>
+        <tr><td class="k">main.js</td><td>Input, boot, cinematic title screen, game loop</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid g3" style="margin-top:22px">
+    <div class="card"><div class="ic">🎲</div><h3>Deterministic World</h3><p>A seeded RNG builds an identical 12,800×3,700 city every visit — buildings, ziplines, wires, holes and props all placed procedurally.</p></div>
+    <div class="card"><div class="ic">🎨</div><h3>Pre-rendered Facades</h3><p>Each building's windows rasterize once to an offscreen canvas, keeping the render loop cheap with hundreds of lit windows.</p></div>
+    <div class="card"><div class="ic">🔊</div><h3>Procedural Audio</h3><p>Detuned saw pads through a moving filter, zone-adaptive arpeggios, a beat clock, rain/wind noise, footsteps &amp; purrs — all live.</p></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- CONTROLS -->
+<section id="controls">
+  <div class="eyebrow">12 · CONTROLS</div>
+  <h2>Playing PawPaw</h2>
+  <div class="grid g2">
+    <div class="panel"><table><tbody>
+      <tr><td class="k"><span class="kbd">← →</span> / <span class="kbd">A D</span></td><td>Move</td></tr>
+      <tr><td class="k"><span class="kbd">↑</span></td><td>Jump / double jump</td></tr>
+      <tr><td class="k"><span class="kbd">W</span></td><td>Climb ladders &amp; drainpipes</td></tr>
+      <tr><td class="k"><span class="kbd">SPACE</span></td><td>Sprint</td></tr>
+      <tr><td class="k"><span class="kbd">S</span></td><td>Slide / drop through</td></tr>
+      <tr><td class="k"><span class="kbd">X</span></td><td>Dash (once unlocked)</td></tr>
+    </tbody></table></div>
+    <div class="panel"><table><tbody>
+      <tr><td class="k"><span class="kbd">E</span></td><td>Interact</td></tr>
+      <tr><td class="k"><span class="kbd">C</span></td><td>Scratch</td></tr>
+      <tr><td class="k"><span class="kbd">M</span></td><td>City map</td></tr>
+      <tr><td class="k"><span class="kbd">J</span></td><td>Journal</td></tr>
+      <tr><td class="k"><span class="kbd">P</span> / <span class="kbd">Enter</span></td><td>Photo mode / capture</td></tr>
+      <tr><td class="k"><span class="kbd">Esc</span></td><td>Close menus</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="eyebrow">13 · FULL GALLERY</div>
+  <h2>Every Scene</h2>
+  <p class="lead">All thirty-nine captures, taken live in-game (canvas world + HTML HUD/modals composited at 1280×800).</p>
+  <div class="grid g3">
+    <figure><img src="report-assets/01_title.jpg"><figcaption>Title screen</figcaption></figure>
+    <figure><img src="report-assets/02_street_npcs.jpg"><figcaption>Neon Market &amp; NPCs</figcaption></figure>
+    <figure><img src="report-assets/03_alley.jpg"><figcaption>Back Alley Network</figcaption></figure>
+    <figure><img src="report-assets/04_plaza.jpg"><figcaption>Transit Plaza</figcaption></figure>
+    <figure><img src="report-assets/05_corporate.jpg"><figcaption>Corporate Sector</figcaption></figure>
+    <figure><img src="report-assets/06_docks.jpg"><figcaption>Old Signal Docks</figcaption></figure>
+    <figure><img src="report-assets/07_rooftops.jpg"><figcaption>Rooftop Layer</figcaption></figure>
+    <figure><img src="report-assets/08_underground.jpg"><figcaption>Underground</figcaption></figure>
+    <figure><img src="report-assets/09_heavy_rain.jpg"><figcaption>Heavy rain</figcaption></figure>
+    <figure><img src="report-assets/10_fog.jpg"><figcaption>Fog</figcaption></figure>
+    <figure><img src="report-assets/11_storm_lightning.jpg"><figcaption>Storm &amp; lightning</figcaption></figure>
+    <figure><img src="report-assets/12_blackout.jpg"><figcaption>Power outage</figcaption></figure>
+    <figure><img src="report-assets/13_kibble_rain.jpg"><figcaption>Kibble-rain bonus</figcaption></figure>
+    <figure><img src="report-assets/14_dawn_pink.jpg"><figcaption>Pink dawn</figcaption></figure>
+    <figure><img src="report-assets/15_courier_board.jpg"><figcaption>Courier board</figcaption></figure>
+    <figure><img src="report-assets/16_race_start.jpg"><figcaption>Race start</figcaption></figure>
+    <figure><img src="report-assets/17_race_active.jpg"><figcaption>Race in progress</figcaption></figure>
+    <figure><img src="report-assets/18_hack_minigame.jpg"><figcaption>Hacking minigame</figcaption></figure>
+    <figure><img src="report-assets/19_journal_completion.jpg"><figcaption>Journal · Completion</figcaption></figure>
+    <figure><img src="report-assets/20_journal_quests.jpg"><figcaption>Journal · Quests</figcaption></figure>
+    <figure><img src="report-assets/21_journal_skills.jpg"><figcaption>Journal · Skill Tree</figcaption></figure>
+    <figure><img src="report-assets/22_journal_stats.jpg"><figcaption>Journal · Stats</figcaption></figure>
+    <figure><img src="report-assets/23_shop.jpg"><figcaption>Street Vendor</figcaption></figure>
+    <figure><img src="report-assets/24_city_map.jpg"><figcaption>City map</figcaption></figure>
+    <figure><img src="report-assets/25_teleport.jpg"><figcaption>Fast travel</figcaption></figure>
+    <figure><img src="report-assets/26_climb.jpg"><figcaption>Climbing</figcaption></figure>
+    <figure><img src="report-assets/27_zipline.jpg"><figcaption>Zipline</figcaption></figure>
+    <figure><img src="report-assets/28_scratch.jpg"><figcaption>Scratch</figcaption></figure>
+    <figure><img src="report-assets/29_sprint_trail.jpg"><figcaption>Sprint + trail</figcaption></figure>
+    <figure><img src="report-assets/30_curio_street.jpg"><figcaption>Street curiosity</figcaption></figure>
+    <figure><img src="report-assets/31_curio_roof.jpg"><figcaption>Rooftop curiosity</figcaption></figure>
+    <figure><img src="report-assets/32_curio_underground.jpg"><figcaption>Underground curiosity</figcaption></figure>
+    <figure><img src="report-assets/33_photo_mode.jpg"><figcaption>Photo mode</figcaption></figure>
+    <figure><img src="report-assets/34_lore_dialog.jpg"><figcaption>Lore fragment</figcaption></figure>
+    <figure><img src="report-assets/35_kitten_rescue.jpg"><figcaption>Kitten rescue</figcaption></figure>
+    <figure><img src="report-assets/36_fever_combo.jpg"><figcaption>Fever / combo</figcaption></figure>
+    <figure><img src="report-assets/37_supply_drone.jpg"><figcaption>Supply drone</figcaption></figure>
+    <figure><img src="report-assets/38_city_npcs.jpg"><figcaption>City crowd</figcaption></figure>
+    <figure><img src="report-assets/39_npc_talk.jpg"><figcaption>NPC conversation</figcaption></figure>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  PAWPAW WORLD · A CYBERPUNK CAT ODYSSEY · VANILLA JS · CANVAS 2D · WEBAUDIO · LOCALSTORAGE<br>
+  No missions you must take. No combat. Just a cyber-cat, the rooftops, and the rain.
+</footer>
+
+</body>
+</html>
